@@ -1,0 +1,436 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bastien.fun — Internet, mais plus fun</title>
+<meta name="description" content="Des mini-jeux, des expériences interactives et des idées surprenantes.">
+<style>
+:root {
+  --bg:#f7f7fb; --ink:#171725; --muted:#77778b;
+  --purple:#7657ff; --line:#e8e7f0;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:Inter,system-ui,-apple-system,sans-serif;
+}
+header {
+  max-width:1080px; margin:auto; padding:24px 22px;
+  display:flex; justify-content:space-between; align-items:center;
+}
+.logo { font-size:23px; font-weight:900; letter-spacing:-1px; }
+.logo span { color:var(--purple); }
+.pill {
+  background:#eeebff; color:#6044e7; padding:8px 13px;
+  border-radius:99px; font-size:12px; font-weight:750;
+}
+main { max-width:1000px; padding:30px 22px 70px; margin:auto; }
+.hero { text-align:center; padding:52px 0 42px; }
+.eyebrow {
+  color:var(--purple); text-transform:uppercase; font-size:12px;
+  font-weight:850; letter-spacing:2px;
+}
+h1 {
+  font-size:clamp(42px,8vw,76px); line-height:1.03;
+  letter-spacing:-4px; margin:18px 0;
+}
+h1 span {
+  background:linear-gradient(100deg,#7657ff,#ec61b7);
+  color:transparent; background-clip:text;
+}
+.hero p { color:var(--muted); line-height:1.7; font-size:17px; }
+.section-title {
+  display:flex; justify-content:space-between; align-items:center;
+  gap:12px; margin:24px 0 18px;
+}
+h2 { font-size:23px; letter-spacing:-.8px; margin:0; }
+.small { font-size:12px; color:var(--muted); }
+.grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+.card {
+  border:1px solid var(--line); border-radius:23px; overflow:hidden;
+  background:white; transition:transform .2s,box-shadow .2s;
+}
+.card:hover { transform:translateY(-4px); box-shadow:0 12px 35px #2720440c; }
+.card-top {
+  min-height:145px; display:flex; align-items:center;
+  justify-content:center; font-size:64px;
+}
+.c1 { background:#e9e5ff; }
+.c2 { background:#ffe8ef; }
+.c3 { background:#e0f5e8; }
+.c4 { background:#fff0ce; }
+.c5 { background:#dff3ff; }
+.info { padding:19px; }
+.tag {
+  color:var(--muted); text-transform:uppercase;
+  letter-spacing:1px; font-size:10px; font-weight:850;
+}
+h3 { font-size:20px; margin:8px 0; letter-spacing:-.5px; }
+.info p { font-size:13px; line-height:1.6; color:var(--muted); min-height:41px; }
+button {
+  border:0; border-radius:12px; background:var(--ink); color:white;
+  padding:12px 16px; font-weight:750; font-size:13px;
+  cursor:pointer; transition:opacity .2s,transform .2s;
+}
+button:hover { opacity:.85; }
+button:active { transform:scale(.98); }
+button:disabled { opacity:.35; cursor:not-allowed; }
+.primary { background:var(--purple); }
+.secondary { background:#efedf8; color:var(--ink); }
+.panel {
+  display:none; background:white; border:1px solid var(--line);
+  border-radius:22px; padding:24px; margin:22px 0;
+}
+.panel.open { display:block; }
+.panel-head {
+  display:flex; justify-content:space-between; gap:12px;
+  align-items:center; margin-bottom:20px;
+}
+.panel h2 { font-size:25px; }
+.big { font-size:clamp(30px,7vw,48px); font-weight:900; letter-spacing:-2px; }
+.muted { color:var(--muted); font-size:14px; line-height:1.65; }
+.actions { display:flex; gap:9px; flex-wrap:wrap; margin-top:15px; }
+.gamebox {
+  padding:24px; background:#f7f6fb; border-radius:16px;
+  text-align:center; margin-top:18px;
+}
+.gamebox button { margin:5px; }
+.reaction {
+  width:100%; min-height:170px; border-radius:18px; font-size:20px;
+  background:#7657ff; margin-top:15px;
+}
+.reaction.wait { background:#efb33a; color:#211a0b; }
+.reaction.go { background:#24ae73; }
+.progress { height:9px; background:#eeedf5; border-radius:99px; overflow:hidden; }
+.progress div { height:100%; background:var(--purple); width:100%; transition:width .2s; }
+footer { text-align:center; color:var(--muted); font-size:12px; padding:25px; }
+@media(min-width:760px) {
+  .grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .card-top { min-height:165px; }
+}
+@media(max-width:420px) {
+  main { padding-inline:15px; }
+  header { padding-inline:16px; }
+  .hero { padding-top:35px; }
+  h1 { letter-spacing:-2.5px; }
+  .info { padding:15px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Bastien<span>.fun</span></div>
+  <div class="pill">✦ 100 % curiosité</div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="eyebrow">Bienvenue sur ton nouveau terrain de jeu</div>
+    <h1>Internet, mais<br><span>en plus fun.</span></h1>
+    <p>Des expériences à tester, des décisions à prendre<br>
+    et quelques minutes à perdre intelligemment.</p>
+  </section>
+
+  <div class="section-title">
+    <h2>À toi de jouer.</h2>
+    <span class="small">5 expériences à découvrir</span>
+  </div>
+
+  <section class="grid">
+    <article class="card">
+      <div class="card-top c1">⚡</div>
+      <div class="info">
+        <div class="tag">Réflexes · 01</div>
+        <h3>À la vitesse de l'éclair</h3>
+        <p>Teste tes réflexes. Clique dès que l'écran devient vert.</p>
+        <button class="primary" onclick="openGame('reflex')">Tester mes réflexes ↗</button>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-top c2">🎲</div>
+      <div class="info">
+        <div class="tag">Décisions · 02</div>
+        <h3>Décision impossible</h3>
+        <p>Deux options, une décision. Laisse le hasard trancher.</p>
+        <button class="primary" onclick="openGame('choice')">Décider ↗</button>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-top c3">🧠</div>
+      <div class="info">
+        <div class="tag">Culture générale · 03</div>
+        <h3>Le quiz express</h3>
+        <p>Quelques questions pour tester ce que tu sais.</p>
+        <button class="primary" onclick="openGame('quiz')">Jouer au quiz ↗</button>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-top c4">💸</div>
+      <div class="info">
+        <div class="tag">Simulation · 04</div>
+        <h3>Dépense folle</h3>
+        <p>Tu as un million d'euros virtuels. Qu'en fais-tu ?</p>
+        <button class="primary" onclick="openGame('money')">Dépenser ↗</button>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-top c5">💡</div>
+      <div class="info">
+        <div class="tag">Inspiration · 05</div>
+        <h3>Une idée au hasard</h3>
+        <p>Une idée inattendue pour regarder le monde autrement.</p>
+        <button class="primary" onclick="openGame('ideas')">Surprends-moi ↗</button>
+      </div>
+    </article>
+  </section>
+
+  <section class="panel" id="panel" aria-live="polite">
+    <div class="panel-head">
+      <h2 id="gameTitle">Une expérience</h2>
+      <button class="secondary" onclick="closeGame()">✕ Fermer</button>
+    </div>
+    <div id="gameContent"></div>
+  </section>
+</main>
+
+<footer>Bastien.fun · Fait pour les curieux, les rêveurs et les procrastinateurs.</footer>
+
+<script>
+const panel = document.getElementById("panel");
+const title = document.getElementById("gameTitle");
+const content = document.getElementById("gameContent");
+let timer = null;
+let started = 0;
+let waiting = false;
+let spent = 0;
+const budget = 1000000;
+
+function openGame(game) {
+  clearTimeout(timer);
+  panel.classList.add("open");
+  panel.scrollIntoView({behavior:"smooth", block:"start"});
+
+  if (game === "reflex") showReflex();
+  if (game === "choice") showChoice();
+  if (game === "quiz") showQuiz();
+  if (game === "money") showMoney();
+  if (game === "ideas") showIdeas();
+}
+function closeGame() {
+  clearTimeout(timer);
+  panel.classList.remove("open");
+  waiting = false;
+}
+function showReflex() {
+  title.textContent = "⚡ À la vitesse de l'éclair";
+  content.innerHTML = `
+    <p class="muted">Clique sur le bouton pour commencer. Attends le vert, puis clique le plus vite possible. Ne clique pas trop tôt !</p>
+    <div class="gamebox">
+      <div id="reactionMessage">Prêt à tester tes réflexes ?</div>
+      <button id="reactionButton" class="reaction" onclick="reactionClick()">Commencer !</button>
+      <p id="reactionResult" class="muted"></p>
+    </div>`;
+  waiting = false;
+}
+function reactionClick() {
+  const btn = document.getElementById("reactionButton");
+  const msg = document.getElementById("reactionMessage");
+  const result = document.getElementById("reactionResult");
+  if (!btn) return;
+  if (btn.dataset.state === "ready") {
+    clearTimeout(timer);
+    btn.dataset.state = "early";
+    btn.className = "reaction";
+    btn.textContent = "Recommencer";
+    msg.textContent = "Trop tôt ! 😅";
+    result.textContent = "Il faut attendre le signal vert.";
+    waiting = false;
+    return;
+  }
+  if (btn.dataset.state === "go") {
+    const ms = Date.now() - started;
+    btn.dataset.state = "";
+    btn.className = "reaction";
+    btn.textContent = "Rejouer";
+    msg.textContent = ms + " ms";
+    result.textContent = ms < 220 ? "Incroyablement rapide !" :
+      ms < 300 ? "Très bons réflexes !" :
+      ms < 400 ? "Pas mal du tout !" : "Tu peux faire mieux. Réessaie !";
+    waiting = false;
+    return;
+  }
+  btn.dataset.state = "ready";
+  btn.className = "reaction wait";
+  btn.textContent = "Attends le vert…";
+  msg.textContent = "Concentre-toi.";
+  result.textContent = "";
+  waiting = true;
+  timer = setTimeout(() => {
+    if (!document.getElementById("reactionButton") || !waiting) return;
+    btn.dataset.state = "go";
+    btn.className = "reaction go";
+    btn.textContent = "MAINTENANT !";
+    msg.textContent = "CLIQUE !";
+    started = Date.now();
+  }, 1500 + Math.random() * 3000);
+}
+function showChoice() {
+  title.textContent = "🎲 Décision impossible";
+  content.innerHTML = `
+    <p class="muted">Écris deux options. Le hasard en choisira une pour toi.</p>
+    <div class="gamebox">
+      <input id="optionA" placeholder="Option A" value="Pizza"
+        style="padding:13px;width:100%;border:1px solid #ddd;border-radius:10px;margin-bottom:10px;font:inherit">
+      <input id="optionB" placeholder="Option B" value="Burger"
+        style="padding:13px;width:100%;border:1px solid #ddd;border-radius:10px;font:inherit">
+      <div class="actions" style="justify-content:center">
+        <button class="primary" onclick="choose()">Que le hasard décide !</button>
+      </div>
+      <div id="choiceResult" class="big" style="margin-top:20px"></div>
+    </div>`;
+}
+function choose() {
+  const a = document.getElementById("optionA").value.trim() || "Option A";
+  const b = document.getElementById("optionB").value.trim() || "Option B";
+  document.getElementById("choiceResult").textContent =
+    Math.random() < .5 ? "👉 " + a : "👉 " + b;
+}
+const questions = [
+  {q:"Quelle est la planète la plus proche du Soleil ?",a:["Vénus","Mercure","Mars","Jupiter"],c:1},
+  {q:"Combien de côtés a un hexagone ?",a:["5","6","7","8"],c:1},
+  {q:"Quel animal est le plus grand au monde ?",a:["Éléphant d'Afrique","Girafe","Baleine bleue","Requin blanc"],c:2},
+  {q:"Combien font 12 × 8 ?",a:["86","92","96","108"],c:2},
+  {q:"Quelle est la capitale du Japon ?",a:["Séoul","Pékin","Kyoto","Tokyo"],c:3}
+];
+let qi = 0, score = 0, answered = false;
+function showQuiz() {
+  title.textContent = "🧠 Le quiz express";
+  qi = 0; score = 0; answered = false;
+  renderQuestion();
+}
+function renderQuestion() {
+  if (qi >= questions.length) {
+    content.innerHTML = `<div class="gamebox">
+      <div class="big">${score}/${questions.length}</div>
+      <h3>${score === 5 ? "Incroyable, sans-faute ! 🏆" : score >= 3 ? "Bien joué ! 🎉" : "On retente sa chance ? 💪"}</h3>
+      <p class="muted">Tu as terminé le quiz.</p>
+      <button class="primary" onclick="showQuiz()">Rejouer</button>
+    </div>`;
+    return;
+  }
+  answered = false;
+  const q = questions[qi];
+  content.innerHTML = `<div class="progress"><div style="width:${qi/questions.length*100}%"></div></div>
+    <p class="muted">Question ${qi+1} sur ${questions.length} · Score : ${score}</p>
+    <h3>${q.q}</h3>
+    <div id="answers" class="gamebox"></div>
+    <p id="quizFeedback" class="muted"></p>
+    <button id="nextQuestion" class="primary" style="display:none" onclick="qi++;renderQuestion()">Question suivante →</button>`;
+  const answers = document.getElementById("answers");
+  q.a.forEach((a,i) => {
+    const b = document.createElement("button");
+    b.className = "secondary";
+    b.style.display = "block";
+    b.style.width = "100%";
+    b.style.margin = "7px 0";
+    b.textContent = a;
+    b.onclick = () => answerQuiz(i);
+    answers.appendChild(b);
+  });
+}
+function answerQuiz(i) {
+  if (answered) return;
+  answered = true;
+  const q = questions[qi];
+  if (i === q.c) {
+    score++;
+    document.getElementById("quizFeedback").textContent = "Bonne réponse ! 🎉";
+  } else {
+    document.getElementById("quizFeedback").textContent =
+      "Pas tout à fait ! La bonne réponse était : " + q.a[q.c] + ".";
+  }
+  document.querySelectorAll("#answers button").forEach(b => b.disabled = true);
+  document.getElementById("nextQuestion").style.display = "inline-block";
+}
+const items = [
+  {name:"Un café",price:3,emoji:"☕"},
+  {name:"Des baskets",price:120,emoji:"👟"},
+  {name:"Un vélo",price:900,emoji:"🚲"},
+  {name:"Un ordinateur",price:1800,emoji:"💻"},
+  {name:"Un voyage",price:3500,emoji:"✈️"},
+  {name:"Une voiture",price:30000,emoji:"🚗"},
+  {name:"Une maison",price:300000,emoji:"🏡"}
+];
+function showMoney() {
+  title.textContent = "💸 Dépense folle";
+  spent = 0;
+  renderMoney();
+}
+function renderMoney() {
+  const left = budget - spent;
+  content.innerHTML = `<div class="gamebox">
+    <p class="muted">Ton budget virtuel</p>
+    <div class="big">${left.toLocaleString("fr-FR")} €</div>
+    <div class="progress"><div style="width:${left/budget*100}%"></div></div>
+    <p class="muted">Dépensé : ${spent.toLocaleString("fr-FR")} € sur 1 000 000 €</p>
+    <div id="shop" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:9px;margin-top:20px"></div>
+    <p id="moneyMessage" class="muted"></p>
+    <button class="secondary" onclick="showMoney()">Tout recommencer</button>
+  </div>`;
+  const shop = document.getElementById("shop");
+  items.forEach(item => {
+    const b = document.createElement("button");
+    b.className = "secondary";
+    b.style.padding = "14px 7px";
+    b.innerHTML = `<span style="font-size:25px">${item.emoji}</span><br>${item.name}<br><b>${item.price.toLocaleString("fr-FR")} €</b>`;
+    b.disabled = left < item.price;
+    b.onclick = () => {
+      spent += item.price;
+      renderMoney();
+      document.getElementById("moneyMessage").textContent =
+        "Tu as acheté : " + item.name + " !";
+    };
+    shop.appendChild(b);
+  });
+}
+const ideas = [
+  "Invente un nouveau parfum qui n'existe pas.",
+  "Imagine une ville où personne n'a de téléphone.",
+  "Apprends trois mots dans une langue inconnue.",
+  "Dessine un animal qui n'existe pas.",
+  "Écris une histoire en six mots.",
+  "Trouve cinq utilisations insolites d'une cuillère.",
+  "Passe une heure sans regarder l'heure.",
+  "Imagine à quoi ressemblera Internet dans 100 ans.",
+  "Crée un mini-jeu avec une seule règle.",
+  "Demande à quelqu'un quelle est sa théorie la plus étrange."
+];
+function showIdeas() {
+  title.textContent = "💡 Une idée au hasard";
+  content.innerHTML = `<div class="gamebox">
+    <div style="font-size:55px">✨</div>
+    <p class="muted">Voici ton prochain défi créatif :</p>
+    <div id="ideaResult" class="big" style="font-size:clamp(22px,4vw,34px);letter-spacing:-1px"></div>
+    <div class="actions" style="justify-content:center">
+      <button class="primary" onclick="newIdea()">Une autre idée ↻</button>
+    </div>
+  </div>`;
+  newIdea();
+}
+let lastIdea = -1;
+function newIdea() {
+  let n;
+  do { n = Math.floor(Math.random()*ideas.length); } while(n === lastIdea);
+  lastIdea = n;
+  const el = document.getElementById("ideaResult");
+  if (el) el.textContent = ideas[n];
+}
+</script>
+</body>
+</html>
