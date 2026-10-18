@@ -424,62 +424,355 @@ function choose() {
   result.textContent = "👉 " + selected;
 }
 
-const questions = [
-  {q:"Quelle est la planète la plus proche du Soleil ?",a:["Vénus","Mercure","Mars","Jupiter"],c:1},
-  {q:"Combien de côtés a un hexagone ?",a:["5","6","7","8"],c:1},
-  {q:"Quel animal est le plus grand au monde ?",a:["Éléphant d'Afrique","Girafe","Baleine bleue","Requin blanc"],c:2},
-  {q:"Combien font 12 × 8 ?",a:["86","92","96","108"],c:2},
-  {q:"Quelle est la capitale du Japon ?",a:["Séoul","Pékin","Kyoto","Tokyo"],c:3}
+const quizQuestionBank = [
+  { q: "Quelle est la planète la plus proche du Soleil ?", a: ["Vénus", "Mercure", "Mars", "Jupiter"], c: 1, category: "sciences" },
+  { q: "Combien de côtés possède un hexagone ?", a: ["5", "6", "7", "8"], c: 1, category: "maths" },
+  { q: "Quel est le plus grand animal du monde ?", a: ["Éléphant d'Afrique", "Girafe", "Baleine bleue", "Requin blanc"], c: 2, category: "animaux" },
+  { q: "Combien font 12 × 8 ?", a: ["86", "92", "96", "108"], c: 2, category: "maths" },
+  { q: "Quelle est la capitale du Japon ?", a: ["Séoul", "Pékin", "Kyoto", "Tokyo"], c: 3, category: "geo" },
+  { q: "Quelle est la capitale de l'Italie ?", a: ["Madrid", "Rome", "Athènes", "Lisbonne"], c: 1, category: "geo" },
+  { q: "Sur quel continent se trouve le Brésil ?", a: ["Afrique", "Asie", "Amérique du Sud", "Europe"], c: 2, category: "geo" },
+  { q: "Quel est le plus grand océan du monde ?", a: ["Atlantique", "Indien", "Arctique", "Pacifique"], c: 3, category: "geo" },
+  { q: "Quelle est la capitale du Canada ?", a: ["Toronto", "Ottawa", "Montréal", "Vancouver"], c: 1, category: "geo" },
+  { q: "Dans quel pays se trouve la tour de Pise ?", a: ["Espagne", "Grèce", "Italie", "France"], c: 2, category: "geo" },
+  { q: "Quel gaz les plantes absorbent-elles pour la photosynthèse ?", a: ["Oxygène", "Dioxyde de carbone", "Hélium", "Hydrogène"], c: 1, category: "sciences" },
+  { q: "Combien de pattes possède une araignée ?", a: ["6", "8", "10", "12"], c: 1, category: "animaux" },
+  { q: "Quel organe pompe le sang dans le corps humain ?", a: ["Le foie", "Le cerveau", "Le cœur", "Le poumon"], c: 2, category: "sciences" },
+  { q: "À quelle température l'eau gèle-t-elle normalement ?", a: ["0 °C", "10 °C", "32 °C", "100 °C"], c: 0, category: "sciences" },
+  { q: "Quelle étoile est au centre de notre système solaire ?", a: ["Sirius", "Le Soleil", "L'étoile Polaire", "Véga"], c: 1, category: "sciences" },
+  { q: "Combien font 9 × 7 ?", a: ["56", "63", "72", "49"], c: 1, category: "maths" },
+  { q: "Combien font 144 ÷ 12 ?", a: ["10", "11", "12", "14"], c: 2, category: "maths" },
+  { q: "Quel est le double de 37 ?", a: ["64", "72", "74", "77"], c: 2, category: "maths" },
+  { q: "Combien font 15 + 28 ?", a: ["41", "42", "43", "44"], c: 2, category: "maths" },
+  { q: "Combien de minutes y a-t-il dans 2 heures ?", a: ["100", "120", "140", "200"], c: 1, category: "maths" },
+  { q: "Quel animal est connu pour changer de couleur ?", a: ["Le caméléon", "Le panda", "Le cheval", "Le dauphin"], c: 0, category: "animaux" },
+  { q: "Comment appelle-t-on le petit de la grenouille ?", a: ["Un poussin", "Un têtard", "Un faon", "Un ourson"], c: 1, category: "animaux" },
+  { q: "Quel mammifère peut voler activement ?", a: ["L'écureuil", "La chauve-souris", "Le lémurien", "Le chat"], c: 1, category: "animaux" },
+  { q: "Quel animal possède une trompe ?", a: ["Le rhinocéros", "L'hippopotame", "L'éléphant", "Le gorille"], c: 2, category: "animaux" },
+  { q: "Quel animal est réputé pour construire des barrages ?", a: ["Le castor", "Le renard", "La loutre", "Le blaireau"], c: 0, category: "animaux" },
+  { q: "Combien de couleurs compte traditionnellement l'arc-en-ciel ?", a: ["5", "6", "7", "8"], c: 2, category: "culture" },
+  { q: "Qui a peint La Joconde ?", a: ["Pablo Picasso", "Claude Monet", "Léonard de Vinci", "Van Gogh"], c: 2, category: "culture" },
+  { q: "Combien de jours compte une année bissextile ?", a: ["364", "365", "366", "367"], c: 2, category: "culture" },
+  { q: "Quel instrument possède généralement 88 touches ?", a: ["La guitare", "Le piano", "La flûte", "Le violon"], c: 1, category: "culture" },
+  { q: "Quel est le symbole chimique de l'or ?", a: ["Ag", "Fe", "Au", "Or"], c: 2, category: "sciences" },
+  { q: "Quelle langue parle-t-on principalement au Brésil ?", a: ["Espagnol", "Portugais", "Français", "Italien"], c: 1, category: "culture" },
+  { q: "Quel est le contraire de « généreux » ?", a: ["Gentil", "Avare", "Poli", "Joyeux"], c: 1, category: "culture" },
+  { q: "Combien de joueurs une équipe de football compte-t-elle sur le terrain ?", a: ["9", "10", "11", "12"], c: 2, category: "culture" },
+  { q: "Quelle est la plus grande planète du système solaire ?", a: ["Saturne", "Terre", "Neptune", "Jupiter"], c: 3, category: "sciences" },
+  { q: "Quel animal est un mammifère marin ?", a: ["Le requin", "Le dauphin", "La pieuvre", "La sardine"], c: 1, category: "animaux" },
+  { q: "Quelle est la racine carrée de 81 ?", a: ["7", "8", "9", "10"], c: 2, category: "maths" },
+  { q: "Dans quel pays se trouvent les pyramides de Gizeh ?", a: ["Mexique", "Égypte", "Inde", "Pérou"], c: 1, category: "geo" },
+  { q: "Quelle planète est surnommée la planète rouge ?", a: ["Vénus", "Mars", "Mercure", "Saturne"], c: 1, category: "sciences" },
+  { q: "Quel est le plus rapide de ces animaux sur terre ?", a: ["Lion", "Guépard", "Loup", "Cheval"], c: 1, category: "animaux" },
+  { q: "Combien font 7 au carré ?", a: ["14", "42", "49", "56"], c: 2, category: "maths" },
+  { q: "Quelle ville est la capitale de l'Espagne ?", a: ["Barcelone", "Séville", "Madrid", "Valence"], c: 2, category: "geo" },
+  { q: "Quel est l'ingrédient principal du guacamole ?", a: ["Concombre", "Avocat", "Courgette", "Petits pois"], c: 1, category: "culture" },
+  { q: "Quel oiseau ne peut généralement pas voler ?", a: ["Aigle", "Autruche", "Hirondelle", "Faucon"], c: 1, category: "animaux" },
+  { q: "Combien de degrés mesure un angle droit ?", a: ["45°", "90°", "180°", "360°"], c: 1, category: "maths" },
+  { q: "Quel est le satellite naturel de la Terre ?", a: ["Mars", "Le Soleil", "La Lune", "Titan"], c: 2, category: "sciences" },
+  { q: "Quelle monnaie utilise le Japon ?", a: ["Yuan", "Won", "Yen", "Dollar"], c: 2, category: "culture" },
+  { q: "Quelle est la capitale de l'Australie ?", a: ["Sydney", "Melbourne", "Canberra", "Perth"], c: 2, category: "geo" },
+  { q: "Quel animal produit le miel ?", a: ["La guêpe", "L'abeille", "Le papillon", "La fourmi"], c: 1, category: "animaux" },
+  { q: "Quel est le résultat de 100 − 37 ?", a: ["53", "63", "67", "73"], c: 1, category: "maths" },
+  { q: "Quel scientifique est associé à la théorie de la relativité ?", a: ["Isaac Newton", "Albert Einstein", "Galilée", "Darwin"], c: 1, category: "sciences" },
+  { q: "Quel pays a pour capitale Lisbonne ?", a: ["Portugal", "Argentine", "Chili", "Maroc"], c: 0, category: "geo" },
+  { q: "Quel est le plus grand félin du monde ?", a: ["Lion", "Léopard", "Tigre", "Guépard"], c: 2, category: "animaux" },
+  { q: "Combien font 25 % de 200 ?", a: ["25", "40", "50", "75"], c: 2, category: "maths" },
+  { q: "Quel métal est liquide à température ambiante ?", a: ["Fer", "Cuivre", "Mercure", "Aluminium"], c: 2, category: "sciences" },
+  { q: "Quel artiste est célèbre pour la sculpture du Penseur ?", a: ["Auguste Rodin", "Michel-Ange", "Donatello", "Rembrandt"], c: 0, category: "culture" },
+  { q: "Sur quel continent se trouve le Kenya ?", a: ["Asie", "Afrique", "Europe", "Océanie"], c: 1, category: "geo" },
+  { q: "Quel animal porte sa maison sur son dos ?", a: ["La tortue", "Le hérisson", "Le lapin", "Le renard"], c: 0, category: "animaux" },
+  { q: "Combien font 11 × 11 ?", a: ["111", "121", "131", "101"], c: 1, category: "maths" },
+  { q: "Quelle partie de la plante absorbe principalement l'eau ?", a: ["Les fleurs", "Les feuilles", "Les racines", "Les fruits"], c: 2, category: "sciences" },
+  { q: "Quel pays est célèbre pour ses moulins à vent et ses tulipes ?", a: ["Pays-Bas", "Suisse", "Norvège", "Autriche"], c: 0, category: "geo" },
+  { q: "Quel sorcier a été créé par J. K. Rowling ?", a: ["Merlin", "Harry Potter", "Gandalf", "Peter Pan"], c: 1, category: "culture" },
+  { q: "Quel est le plus grand organe du corps humain ?", a: ["Le cœur", "Le foie", "La peau", "Le cerveau"], c: 2, category: "sciences" },
+  { q: "Combien de zéros y a-t-il dans mille ?", a: ["2", "3", "4", "5"], c: 1, category: "maths" },
+  { q: "Quel animal est un symbole de paix ?", a: ["Le corbeau", "La colombe", "Le paon", "Le cygne"], c: 1, category: "culture" }
 ];
-let qi = 0, score = 0, answered = false;
+
+let questions = [];
+let qi = 0;
+let score = 0;
+let answered = false;
+let quizCount = 5;
+let quizCategories = ["geo", "sciences", "maths", "animaux", "culture"];
+let quizLastSettings = {
+  count: 5,
+  categories: ["geo", "sciences", "maths", "animaux", "culture"]
+};
+
+function quizShuffle(array) {
+  const result = array.slice();
+
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+
+  return result;
+}
 function showQuiz() {
   title.textContent = "🧠 Le quiz express";
-  qi = 0; score = 0; answered = false;
-  renderQuestion();
+  qi = 0;
+  score = 0;
+  answered = false;
+  renderQuizSetup();
 }
-function renderQuestion() {
-  if (qi >= questions.length) {
-    content.innerHTML = `<div class="gamebox">
-      <div class="big">${score}/${questions.length}</div>
-      <h3>${score === 5 ? "Incroyable, sans-faute ! 🏆" : score >= 3 ? "Bien joué ! 🎉" : "On retente sa chance ? 💪"}</h3>
-      <p class="muted">Tu as terminé le quiz.</p>
-      <button class="primary" onclick="showQuiz()">Rejouer</button>
-    </div>`;
+
+function renderQuizSetup() {
+  title.textContent = "🧠 Le quiz express";
+
+  const categories = [
+    { id: "geo", name: "🌍 Géographie" },
+    { id: "sciences", name: "🔬 Sciences" },
+    { id: "maths", name: "➗ Mathématiques" },
+    { id: "animaux", name: "🐾 Animaux" },
+    { id: "culture", name: "🎨 Culture générale" }
+  ];
+
+  content.innerHTML = `
+    <div class="gamebox">
+      <h3>Prépare ton quiz ! ✨</h3>
+      <p class="muted">Choisis la longueur et les thèmes de ta partie.</p>
+
+      <p><strong>Combien de questions ?</strong></p>
+      <div id="quizCountChoices" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+        ${[5, 10, 15, 20].map(n => `
+          <button type="button"
+            class="${quizCount === n ? "primary" : "secondary"}"
+            data-count="${n}">${n}</button>
+        `).join("")}
+      </div>
+
+      <p style="margin-top:22px"><strong>Choisis tes catégories</strong></p>
+      <div style="display:grid;gap:10px;text-align:left">
+        ${categories.map(cat => `
+          <label style="display:flex;gap:10px;align-items:center;cursor:pointer">
+            <input type="checkbox" class="quizCategory"
+              value="${cat.id}" ${quizCategories.includes(cat.id) ? "checked" : ""}>
+            <span>${cat.name}</span>
+          </label>
+        `).join("")}
+      </div>
+
+      <p id="quizSetupFeedback" class="muted" style="margin-top:12px"></p>
+      <button type="button" id="quizStartButton" class="primary" style="margin-top:12px">
+        C'est parti ! 🚀
+      </button>
+    </div>
+  `;
+
+  content.querySelectorAll("[data-count]").forEach(button => {
+    button.addEventListener("click", () => {
+      quizCount = Number(button.dataset.count);
+      renderQuizSetup();
+    });
+  });
+
+  document.getElementById("quizStartButton").addEventListener("click", startQuiz);
+}
+
+function startQuiz() {
+  const selected = Array.from(
+    content.querySelectorAll(".quizCategory:checked")
+  ).map(input => input.value);
+
+  const feedback = document.getElementById("quizSetupFeedback");
+
+  if (selected.length === 0) {
+    feedback.textContent = "Choisis au moins une catégorie ! 😊";
     return;
   }
+
+  const available = quizQuestionBank.filter(q =>
+    selected.includes(q.category)
+  );
+
+  if (available.length < quizCount) {
+    feedback.textContent =
+      "Il n'y a que " + available.length +
+      " questions disponibles dans ces catégories. Choisis moins de questions ou ajoute des catégories.";
+    return;
+  }
+
+  quizCategories = selected;
+  quizLastSettings = {
+    count: quizCount,
+    categories: selected.slice()
+  };
+
+  prepareQuizQuestions(available, quizCount);
+}
+function prepareQuizQuestions(available, count) {
+  questions = quizShuffle(available)
+    .slice(0, count)
+    .map(question => {
+      const answers = quizShuffle(
+        question.a.map((answer, index) => ({
+          text: answer,
+          correct: index === question.c
+        }))
+      );
+
+      return {
+        q: question.q,
+        a: answers.map(answer => answer.text),
+        c: answers.findIndex(answer => answer.correct),
+        category: question.category
+      };
+    });
+
+  qi = 0;
+  score = 0;
+  answered = false;
+  renderQuestion();
+}
+
+function renderQuestion() {
+  if (qi >= questions.length) {
+    renderQuizResult();
+    return;
+  }
+
   answered = false;
   const q = questions[qi];
-  content.innerHTML = `<div class="progress"><div style="width:${qi/questions.length*100}%"></div></div>
-    <p class="muted">Question ${qi+1} sur ${questions.length} · Score : ${score}</p>
-    <h3>${q.q}</h3>
+
+  content.innerHTML = `
+    <div class="progress">
+      <div style="width:${qi / questions.length * 100}%"></div>
+    </div>
+
+    <p class="muted">
+      Question ${qi + 1} sur ${questions.length} · Score : ${score}
+    </p>
+
+    <h3>${quizEscape(q.q)}</h3>
+
     <div id="answers" class="gamebox"></div>
-    <p id="quizFeedback" class="muted"></p>
-    <button id="nextQuestion" class="primary" style="display:none" onclick="qi++;renderQuestion()">Question suivante →</button>`;
+
+    <p id="quizFeedback" class="muted" aria-live="polite"></p>
+
+    <button
+      type="button"
+      id="nextQuestion"
+      class="primary"
+      style="display:none">
+      ${qi === questions.length - 1
+        ? "Voir mon résultat 🏆"
+        : "Question suivante →"}
+    </button>
+  `;
+
   const answers = document.getElementById("answers");
-  q.a.forEach((a,i) => {
-    const b = document.createElement("button");
-    b.className = "secondary";
-    b.style.display = "block";
-    b.style.width = "100%";
-    b.style.margin = "7px 0";
-    b.textContent = a;
-    b.onclick = () => answerQuiz(i);
-    answers.appendChild(b);
+
+  q.a.forEach((answer, i) => {
+    const button = document.createElement("button");
+
+    button.type = "button";
+    button.className = "secondary";
+    button.style.display = "block";
+    button.style.width = "100%";
+    button.style.margin = "7px 0";
+    button.textContent = answer;
+
+    button.addEventListener("click", () => answerQuiz(i));
+
+    answers.appendChild(button);
+  });
+
+  document.getElementById("nextQuestion").addEventListener("click", () => {
+    qi++;
+    renderQuestion();
   });
 }
+
+function quizEscape(text) {
+  return String(text).replace(/[&<>"']/g, function (char) {
+    return {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    }[char];
+  });
+}
+
 function answerQuiz(i) {
   if (answered) return;
+
   answered = true;
+
   const q = questions[qi];
+  const feedback = document.getElementById("quizFeedback");
+
   if (i === q.c) {
     score++;
-    document.getElementById("quizFeedback").textContent = "Bonne réponse ! 🎉";
+    feedback.textContent = "Bonne réponse ! 🎉";
   } else {
-    document.getElementById("quizFeedback").textContent =
+    feedback.textContent =
       "Pas tout à fait ! La bonne réponse était : " + q.a[q.c] + ".";
   }
-  document.querySelectorAll("#answers button").forEach(b => b.disabled = true);
+
+  document.querySelectorAll("#answers button").forEach((button, index) => {
+    button.disabled = true;
+
+    if (index === q.c) {
+      button.style.border = "2px solid #5aaf78";
+    } else if (index === i) {
+      button.style.border = "2px solid #e58b8b";
+    }
+  });
+
   document.getElementById("nextQuestion").style.display = "inline-block";
+}
+function renderQuizResult() {
+  const total = questions.length;
+  const percentage = Math.round((score / total) * 100);
+
+  let message;
+
+  if (score === total) {
+    message = "Incroyable, sans-faute ! 🏆";
+  } else if (percentage >= 70) {
+    message = "Excellent travail ! 🎉";
+  } else if (percentage >= 40) {
+    message = "Bien joué, continue ! 💪";
+  } else {
+    message = "On retente sa chance ? 🚀";
+  }
+
+  content.innerHTML = `
+    <div class="gamebox">
+      <div class="big">${score}/${total}</div>
+      <h3>${message}</h3>
+      <p class="muted">Tu as terminé le quiz !</p>
+      <p class="muted">${percentage} % de bonnes réponses</p>
+
+      <button type="button" id="quizReplayButton" class="primary">
+        Rejouer 🔄
+      </button>
+
+      <button type="button" id="quizSetupButton" class="secondary">
+        Changer les paramètres
+      </button>
+    </div>
+  `;
+
+  document.getElementById("quizReplayButton").addEventListener("click", () => {
+    const available = quizQuestionBank.filter(question =>
+      quizLastSettings.categories.includes(question.category)
+    );
+
+    prepareQuizQuestions(available, quizLastSettings.count);
+  });
+
+  document.getElementById("quizSetupButton").addEventListener("click", () => {
+    quizCount = quizLastSettings.count;
+    quizCategories = quizLastSettings.categories.slice();
+    renderQuizSetup();
+  });
 }
 const items = [
   {name:"Un café",price:3,emoji:"☕"},
