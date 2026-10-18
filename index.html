@@ -423,12 +423,7 @@ function choose() {
   const selected = options[Math.floor(Math.random() * options.length)];
   result.textContent = "👉 " + selected;
 }
-function choose() {
-  const a = document.getElementById("optionA").value.trim() || "Option A";
-  const b = document.getElementById("optionB").value.trim() || "Option B";
-  document.getElementById("choiceResult").textContent =
-    Math.random() < .5 ? "👉 " + a : "👉 " + b;
-}
+
 const questions = [
   {q:"Quelle est la planète la plus proche du Soleil ?",a:["Vénus","Mercure","Mars","Jupiter"],c:1},
   {q:"Combien de côtés a un hexagone ?",a:["5","6","7","8"],c:1},
